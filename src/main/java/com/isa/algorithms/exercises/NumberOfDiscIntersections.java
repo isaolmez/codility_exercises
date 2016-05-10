@@ -74,7 +74,7 @@ public class NumberOfDiscIntersections {
 			}
 
 			if (contrastArray[i] > contrastArray[i - 1]) {
-				numberOfDiscIntersections += combinationDifference(contrastArray[i] + base,contrastArray[i - 1] + base);
+				numberOfDiscIntersections += combinationDifference(contrastArray[i] + base, contrastArray[i - 1] + base);
 			}
 		}
 

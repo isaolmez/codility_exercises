@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Stack;
 
+import com.isa.algorithms.utils.InputGenerator;
 import com.isa.algorithms.utils.Stopwatch;
 
 public class Leader {
@@ -135,39 +136,13 @@ public class Leader {
 		return false;
 	}
 
-	protected int[] randomLeaderArray(int size) {
-		int[] A = new int[size];
-		Random r = new Random();
-		int leader = r.nextInt();
-		System.out.println("Leader: " + leader);
-		for (int m = 0; m < (size - 1) / 2; m++) {
-			A[m] = r.nextInt();
-		}
-
-		for (int k = (size - 1) / 2; k < size; k++) {
-			A[k] = leader;
-		}
-
-		return A;
-	}
-
-	protected int[] randomArray(int size) {
-		int[] A = new int[size];
-		Random r = new Random();
-		for (int m = 0; m < size; m++) {
-			A[m] = r.nextInt();
-		}
-
-		return A;
-	}
-
 	public static void main(String[] args) {
 		// int[] A = { 4, 2, 1, 1, 3, 3, 3, 3, 4, 3, 1, 2, 3, 3, 3 };
 		int[] A = { 2, 1, 1, 3, 4 };
 //		A = new int[] { 1, 1, 1, 2, 3, 4 };
 		Leader l = new Leader();
 		Stopwatch watch;
-		A = l.randomArray(1000000);
+		A = InputGenerator.randomArray(1000000);
 		watch = new Stopwatch();
 		// System.out.println(l.showLeaderBasic(A));
 		// System.out.println("Elapsed time: " + watch.elapsedTime());
@@ -189,7 +164,7 @@ public class Leader {
 		System.out.println("showLeaderWithSorted => Elapsed time: " + watch.elapsedTime());
 
 		System.out.println("*************");
-		A = l.randomLeaderArray(1000000);
+		A = InputGenerator.randomLeaderArray(1000000);
 		watch = new Stopwatch();
 		// System.out.println(l.showLeaderBasic(A));
 		// System.out.println("Elapsed time: " + watch.elapsedTime());

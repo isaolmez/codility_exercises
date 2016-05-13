@@ -1,11 +1,11 @@
 package com.isa.algorithms.exercises;
 
 /**
- * A zero-indexed array A consisting of N integers is given. Rotation of the array means that each element is shifted right by one index, and the last element of the array is also
- * moved to the first place.
+ * A zero-indexed array A consisting of N integers is given. Rotation of the array means that each element is shifted right by one index, and the last element
+ * of the array is also moved to the first place.
  * 
- * For example, the rotation of array A = [3, 8, 9, 7, 6] is [6, 3, 8, 9, 7]. The goal is to rotate array A K times; that is, each element of A will be shifted to the right by K
- * indexes.
+ * For example, the rotation of array A = [3, 8, 9, 7, 6] is [6, 3, 8, 9, 7]. The goal is to rotate array A K times; that is, each element of A will be shifted
+ * to the right by K indexes.
  * 
  * Write a function:
  * 
@@ -17,20 +17,20 @@ package com.isa.algorithms.exercises;
  * 
  * Assume that:
  * 
- * N and K are integers within the range [0..100]; each element of array A is an integer within the range [−1,000..1,000]. In your solution, focus on correctness. The performance
- * of your solution will not be the focus of the assessment.
+ * N and K are integers within the range [0..100]; each element of array A is an integer within the range [−1,000..1,000]. In your solution, focus on
+ * correctness. The performance of your solution will not be the focus of the assessment.
  * 
  * @author isaolmez
  * 
  * */
 public class CyclicRotation {
 	public int[] solution(int[] A, int K) {
-		if(A == null){
+		if (A == null) {
 			return null;
-		}else if(A.length == 0){
+		} else if (A.length == 0) {
 			return A;
 		}
-		
+
 		int length = A.length;
 		int[] aux = new int[length];
 		for (int i = 0; i < length; i++) {

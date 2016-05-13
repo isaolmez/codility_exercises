@@ -8,8 +8,8 @@ import java.util.Stack;
  * 
  * A string S consisting of N characters is considered to be properly nested if any of the following conditions is true:
  * 
- * S is empty; S has the form "(U)" or "[U]" or "{U}" where U is a properly nested string; S has the form "VW" where V and W are properly nested strings. For example, the string
- * "{[()()]}" is properly nested but "([)()]" is not.
+ * S is empty; S has the form "(U)" or "[U]" or "{U}" where U is a properly nested string; S has the form "VW" where V and W are properly nested strings. For
+ * example, the string "{[()()]}" is properly nested but "([)()]" is not.
  * 
  * Write a function:
  * 
@@ -34,7 +34,7 @@ public class Brackets {
 		map.put(")", "(");
 		map.put("]", "[");
 		map.put("}", "{");
-		
+
 		Stack<String> stack = new Stack<>();
 		for (int i = 0; i < S.length(); i++) {
 			stack.push(S.substring(i, i + 1));
@@ -49,7 +49,7 @@ public class Brackets {
 					} else {
 						return 0;
 					}
-				}else{
+				} else {
 					stack.push(current);
 					break;
 				}

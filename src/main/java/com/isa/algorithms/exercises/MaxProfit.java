@@ -62,10 +62,32 @@ public class MaxProfit {
 //		System.out.println(globalStart + "-" + globalEnd);
 		return globalMaxProfit;
 	}
+	
+	public int solutionWithoutPosition(int[] A) {
+		if (A == null || A.length < 2) {
+			return 0;
+		}
+
+		int globalMaxProfit = 0;
+		int runningProfit = 0;
+
+		for (int i = 1; i < A.length; i++) {
+			runningProfit += (A[i] - A[i - 1]);
+			if (runningProfit <= 0) {
+				runningProfit = 0;
+			} else {
+				if (runningProfit > globalMaxProfit) {
+					globalMaxProfit = runningProfit;
+				}
+			}
+		}
+
+		return globalMaxProfit;
+	}
 
 	public static void main(String[] args) {
 		int[] A = { 23171, 21011, 21123, 21366, 21013, 21367 };
 		MaxProfit m = new MaxProfit();
-		System.out.println(m.solution(A));
+		System.out.println(m.solutionWithoutPosition(A));
 	}
 }

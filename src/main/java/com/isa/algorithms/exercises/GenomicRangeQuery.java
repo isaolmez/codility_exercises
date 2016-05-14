@@ -52,35 +52,29 @@ import java.util.Map;
  * NOT RUNNING/COMPLETE!
  * */
 public class GenomicRangeQuery {
-	private Map<Character, Integer> impactMap;
+	private Map<Integer, Integer> impactMap;
 	{
 		impactMap = new HashMap<>();
-		impactMap.put('A', 1);
-		impactMap.put('C', 2);
-		impactMap.put('G', 3);
-		impactMap.put('T', 4);
+		impactMap.put((int) 'A', 1);
+		impactMap.put((int) 'C', 2);
+		impactMap.put((int) 'G', 3);
+		impactMap.put((int) 'T', 4);
 	}
 
-	private int[][] priorityTable;
+	private char[][] priorityTable;
 
 	public int[] solution(String S, int[] P, int[] Q) {
 
-		int levelCount = (int)Math.ceil(Math.log(S.length()) / Math.log(2));
-		priorityTable = new int[levelCount][];
-		for (int subLength = 1, levelIndex = 0; subLength <= S.length(); subLength *= 2, levelIndex++) {
-			System.out.println("Level: " + levelIndex + "with elements: " + (int) Math.ceil((double) S.length() / subLength));
-			priorityTable[levelIndex] = new int[(int) Math.ceil((double) S.length() / subLength)];
-			if (subLength == 1) {
-				for (int k = 0; k < S.length(); k++) {
-					priorityTable[levelIndex][k] = impactMap.get(S.charAt(k));
-				}
-			} else {
-				for (int traverser = 0, subIndex = 0; traverser < S.length(); traverser++, subIndex++) {
+		int levelCount = (int) Math.ceil(Math.log(S.length()) / Math.log(2));
+		char[] chars = S.toCharArray();
+		priorityTable = new char[levelCount + 1][];
+		priorityTable[0] = chars;
+		for (int subLength = 2, levelIndex = 1; subLength <= S.length(); subLength *= 2, levelIndex++) {
+			priorityTable[levelIndex] = new char[(int) Math.ceil((double) S.length() / subLength)];
+			for (int traverser = 0, subIndex = 0; traverser < priorityTable[levelIndex - 1].length; traverser += 2, subIndex++) {
 
-					int last = (traverser + subLength / 2) < priorityTable[levelIndex - 1].length ? (traverser + subLength / 2) : priorityTable[levelIndex - 1].length - 1;
-					System.out.printf("Trying to access %d and %d in array length %d\n", traverser, last, priorityTable[levelIndex - 1].length);
-					priorityTable[levelIndex][subIndex] = Math.min(priorityTable[levelIndex - 1][traverser], priorityTable[levelIndex - 1][last]);
-				}
+				int last = (traverser + 1) < priorityTable[levelIndex - 1].length ? (traverser + 1) : traverser;
+				priorityTable[levelIndex][subIndex] = (char) Math.min(priorityTable[levelIndex - 1][traverser], priorityTable[levelIndex - 1][last]);
 			}
 		}
 
@@ -88,7 +82,7 @@ public class GenomicRangeQuery {
 		for (int i = 0; i < P.length; i++) {
 			int start = P[i];
 			int end = Q[i];
-			result[i] = findmMin(start, end, levelCount);
+			result[i] = impactMap.get(findmMin(start, end, levelCount));
 		}
 
 		return result;
@@ -97,28 +91,35 @@ public class GenomicRangeQuery {
 	public int findmMin(int start, int end, int level) {
 		// Find the appropriate slices
 		int min = Integer.MAX_VALUE;
-		if (start % level == 0) {
-			int step = (int) Math.pow(2, level);
+		if (level == 0) {
+//			for (int i = start; i <= end; i++) {
+//				min = Math.min(priorityTable[level][i], min);
+//			}
+			
+			return Math.min(priorityTable[level][start], priorityTable[level][end]);
+		}
+
+		int step = (int) Math.pow(2, level);
+		if (start % step == 0) {
 			while (start + step <= end) {
-				min = Math.min(min, priorityTable[level][start]);
+				min = Math.min(min, priorityTable[level][start / step]);
 				start += step;
 			}
 
-			int subMin2 = findmMin(start + 1, end, level - 1);
-			min = Math.min(min, subMin2);
+			int subMinRight = findmMin(start, end, level - 1);
+			min = Math.min(min, subMinRight);
 		} else {
 			int temp = start;
-			start = start + (level - (start % level));
+			start = start + (step - (start % step));
 			if (start <= end) {
-				int subMin = findmMin(temp, start - 1, level - 1);
-				int step = (int) Math.pow(2, level);
+				int subMinLeft = findmMin(temp, start-1, level - 1);
 				while (start + step <= end) {
-					min = Math.min(min, priorityTable[level][start]);
+					min = Math.min(min, priorityTable[level][start / step]);
 					start += step;
 				}
 
-				int subMin2 = findmMin(start + 1, end, level - 1);
-				min = Math.min(min, Math.min(subMin, subMin2));
+				int subMinRight = findmMin(start, end, level - 1);
+				min = Math.min(min, Math.min(subMinLeft, subMinRight));
 			} else {
 				min = findmMin(temp, end, level - 1);
 			}
@@ -132,6 +133,9 @@ public class GenomicRangeQuery {
 		int[] q = { 4, 5, 6 };
 
 		GenomicRangeQuery g = new GenomicRangeQuery();
-		System.out.println(g.solution("CAGCCTA", p, q));
+		int[] result = g.solution("CAGCCTA", p, q);
+		for (int i : result) {
+			System.out.println(i);
+		}
 	}
 }
